@@ -6,7 +6,7 @@ services:
       dockerfile: ./build/Dockerfile
     tty: true # コンテナの永続化
     env_file: # .envファイル
-      - ./build/.go_env
+      - ./build/.env
     environment:
       - TZ=Asia/Tokyo
 
