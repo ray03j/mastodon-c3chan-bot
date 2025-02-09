@@ -45,7 +45,7 @@ func LocalTimeLineListen(client *mastodon.Client) {
 	for event := range stream {
 		switch status := event.(type) {
 		case *mastodon.UpdateEvent:
-			fmt.Printf("New post: %s\n", status.Status.Content)
+			fmt.Printf("New post: %s, %s\n", status.Status.Content, status.Status.Account.Acct)
 		}
 	}
 }
