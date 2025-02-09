@@ -4,6 +4,7 @@ import (
 	"log"
 	"context"
 	"os"
+	"fmt"
 
 	"github.com/mattn/go-mastodon"
 )
@@ -30,6 +31,23 @@ func InitMastodonClient() {
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		AccessToken:  os.Getenv("ACCESS_TOKEN"),
 	})
+}
+
+// ローカルタイムラインを監視
+func LocalTimeLineListen(client *mastodon.Client) {
+	fmt.Println("start streaming timeline")
+
+	stream, err := client.StreamingPublic(context.Background(), false)
+	if err != nil {
+		log.Println("Error starting stream:", err)
+		return
+	}
+	for event := range stream {
+		switch status := event.(type) {
+		case *mastodon.UpdateEvent:
+			fmt.Printf("New post: %s, %s\n", status.Status.Content, status.Status.Account.Acct)
+		}
+	}
 }
 
 // トゥートを投稿
